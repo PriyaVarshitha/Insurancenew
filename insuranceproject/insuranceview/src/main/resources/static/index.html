@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Health Insurance FAQ</title>
+	<style>
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+
+		th,
+		td {
+			border: 1px solid #dddddd;
+			text-align: left;
+			padding: 8px;
+		}
+
+		th {
+			background-color: #f2f2f2;
+		}
+	</style>
+</head>
+
+<body>
+
+	<h1>Health Insurance FAQ</h1>
+	
+	<button onclick="listFAQS()">FAQ's</button>
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>Question</th>
+			<th>Answer</th>
+		</tr>
+	</table>
+	<script>
+		function listFAQS() {
+			var fresh = new XMLHttpRequest(); // Corrected typo here (XMLHttpReqest -> XMLHttpRequest)
+			fresh.open("GET", "/getFAQS", true);
+			fresh.send();
+			fresh.onreadystatechange = function () { // Added the missing event listener
+				if (fresh.readyState == 4 && fresh.status == 200) {
+					var jsonData = JSON.parse(fresh.responseText);
+					var table = document.querySelector('table');
+
+					jsonData.forEach(function (item) {
+						var row = table.insertRow();
+						var idCell = row.insertCell(0);
+						var questionCell = row.insertCell(1);
+						var answerCell = row.insertCell(2);
+
+						idCell.textContent = item.id;
+						questionCell.textContent = item.question;
+						answerCell.textContent = item.answer;
+					});
+				}
+			};
+		}
+	</script>
+</body>
+
+</html>
